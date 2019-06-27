@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <form>
+    <input type="text" name="contact_name" id="contact_name">
+    <input type="submit" id="contact_button" value="adicionar">
+  </form>
+
+  <ul id="list">
+    {% for contact in contacts %}
+    <li>{{ contact }}</li>
+    {% endfor %}
+  </ul>
+
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+  <script>
+    document.getElementById('contact_button').addEventListener('click', function (ev) {
+      ev.preventDefault();
+
+      const name = document.getElementById('contact_name').value;
+      const list = document.getElementById('list');
+      const element = document.createElement('li');
+
+      $.post("{{ url_for('add_contact') }}", { contact_name: name }, function (data) {
+        element.textContent = data;
+      });
+
+      list.append(element);
+      element.textContent = '';
+    });
+
+  </script>
+</body>
+
+</html>
